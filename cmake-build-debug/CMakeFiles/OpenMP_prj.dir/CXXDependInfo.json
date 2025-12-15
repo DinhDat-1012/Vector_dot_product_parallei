@@ -18,6 +18,21 @@
 	"module-dir" : "C:/Users/dinhd/OneDrive/Desktop/OpenMP_prj/cmake-build-debug/CMakeFiles/OpenMP_prj.dir",
 	"sources" : 
 	{
+		"CMakeFiles/OpenMP_prj.dir/Vector_dot_par.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/dinhd/OneDrive/Desktop/OpenMP_prj/Vector_dot_par.cpp"
+		},
+		"CMakeFiles/OpenMP_prj.dir/Vector_dot_par_SIMD.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/dinhd/OneDrive/Desktop/OpenMP_prj/Vector_dot_par_SIMD.cpp"
+		},
+		"CMakeFiles/OpenMP_prj.dir/Vector_dot_seq.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/dinhd/OneDrive/Desktop/OpenMP_prj/Vector_dot_seq.cpp"
+		},
 		"CMakeFiles/OpenMP_prj.dir/main.cpp.obj" : 
 		{
 			"language" : "CXX",

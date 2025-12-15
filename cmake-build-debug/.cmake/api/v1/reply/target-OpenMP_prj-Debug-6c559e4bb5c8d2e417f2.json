@@ -37,7 +37,7 @@
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 7,
+				"line" : 13,
 				"parent" : 0
 			},
 			{
@@ -53,7 +53,7 @@
 			{
 				"command" : 3,
 				"file" : 0,
-				"line" : 8,
+				"line" : 14,
 				"parent" : 0
 			}
 		]
@@ -64,7 +64,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-g -std=gnu++20 -fdiagnostics-color=always"
+					"fragment" : " -fopenmp -g -std=gnu++20 -fdiagnostics-color=always"
 				},
 				{
 					"backtrace" : 5,
@@ -82,7 +82,10 @@
 			},
 			"sourceIndexes" : 
 			[
-				0
+				0,
+				1,
+				3,
+				5
 			]
 		}
 	],
@@ -92,7 +95,11 @@
 		"commandFragments" : 
 		[
 			{
-				"fragment" : "-g",
+				"fragment" : "-fopenmp -g",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "-fopenmp",
 				"role" : "flags"
 			},
 			{
@@ -125,7 +132,19 @@
 			"name" : "Source Files",
 			"sourceIndexes" : 
 			[
-				0
+				0,
+				1,
+				3,
+				5
+			]
+		},
+		{
+			"name" : "Header Files",
+			"sourceIndexes" : 
+			[
+				2,
+				4,
+				6
 			]
 		}
 	],
@@ -136,6 +155,39 @@
 			"compileGroupIndex" : 0,
 			"path" : "main.cpp",
 			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Vector_dot_seq.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Vector_dot_seq.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Vector_dot_par.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Vector_dot_par.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Vector_dot_par_SIMD.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Vector_dot_par_SIMD.h",
+			"sourceGroupIndex" : 1
 		}
 	],
 	"type" : "EXECUTABLE"
