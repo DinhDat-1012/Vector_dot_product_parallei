@@ -54027,94 +54027,75 @@ namespace std
 
 #pragma GCC diagnostic pop
 # 7 "C:/Users/dinhd/OneDrive/Desktop/OpenMP_prj/main.cpp" 2
+# 1 "C:/Users/dinhd/OneDrive/Desktop/OpenMP_prj/Vector_dot_seq.h" 1
+# 9 "C:/Users/dinhd/OneDrive/Desktop/OpenMP_prj/Vector_dot_seq.h"
+
+# 9 "C:/Users/dinhd/OneDrive/Desktop/OpenMP_prj/Vector_dot_seq.h"
+void vector_dot_product_seq(const std::vector<double>& v1, const std::vector<double>& v2, double& time_taken);
+# 8 "C:/Users/dinhd/OneDrive/Desktop/OpenMP_prj/main.cpp" 2
+# 1 "C:/Users/dinhd/OneDrive/Desktop/OpenMP_prj/Vector_dot_par.h" 1
+# 12 "C:/Users/dinhd/OneDrive/Desktop/OpenMP_prj/Vector_dot_par.h"
+void vector_dot_par(int num_of_threads, const std::vector<double>& v1, const std::vector<double>& v2, double& time_taken);
+# 9 "C:/Users/dinhd/OneDrive/Desktop/OpenMP_prj/main.cpp" 2
+# 1 "C:/Users/dinhd/OneDrive/Desktop/OpenMP_prj/Vector_dot_par_SIMD.h" 1
 
 
-# 8 "C:/Users/dinhd/OneDrive/Desktop/OpenMP_prj/main.cpp"
+
+       
+
+
+
+
+
+
+void vector_dot_par_simdncache(int num_of_threads, const std::vector<double>& v1, const std::vector<double>& v2, double& time_taken);
+# 10 "C:/Users/dinhd/OneDrive/Desktop/OpenMP_prj/main.cpp" 2
+
 int main() {
     omp_set_num_threads(16);
 
-    const long N = 1539607511;
+    int num_of_threads = 16;
+    const long N_size_of_data = 1000;
 
-    std::cout << "Dang khoi tao du lieu cho " << N << " phan tu..." << std::endl;
 
-
-    std::vector<double> a(N);
-    std::vector<double> b(N);
+    std::vector<double> a(N_size_of_data);
+    std::vector<double> b(N_size_of_data);
 
 
 
     srand(time(
-# 21 "C:/Users/dinhd/OneDrive/Desktop/OpenMP_prj/main.cpp" 3 4
+# 23 "C:/Users/dinhd/OneDrive/Desktop/OpenMP_prj/main.cpp" 3 4
               __null
-# 21 "C:/Users/dinhd/OneDrive/Desktop/OpenMP_prj/main.cpp"
+# 23 "C:/Users/dinhd/OneDrive/Desktop/OpenMP_prj/main.cpp"
                   ));
 #pragma omp parallel for
-    for (long i = 0; i < N; i++) {
+    for (long i = 0; i < N_size_of_data; i++) {
         a[i] = (double)(rand()) / 
-# 24 "C:/Users/dinhd/OneDrive/Desktop/OpenMP_prj/main.cpp" 3
+# 26 "C:/Users/dinhd/OneDrive/Desktop/OpenMP_prj/main.cpp" 3
                                  0x7fff
-# 24 "C:/Users/dinhd/OneDrive/Desktop/OpenMP_prj/main.cpp"
+# 26 "C:/Users/dinhd/OneDrive/Desktop/OpenMP_prj/main.cpp"
                                          ;
         b[i] = (double)(rand()) / 
-# 25 "C:/Users/dinhd/OneDrive/Desktop/OpenMP_prj/main.cpp" 3
+# 27 "C:/Users/dinhd/OneDrive/Desktop/OpenMP_prj/main.cpp" 3
                                  0x7fff
-# 25 "C:/Users/dinhd/OneDrive/Desktop/OpenMP_prj/main.cpp"
+# 27 "C:/Users/dinhd/OneDrive/Desktop/OpenMP_prj/main.cpp"
                                          ;
     }
 #pragma omp barrier
 
     std::cout << std::endl;
-    std::cout << "Khoi tao xong. Bat dau tinh toan...\n" << std::endl;
 
+    std::cout << "Vector size is:" << N_size_of_data <<"\n" << std::endl;
+    std::cout << "Initial done! Start computing...\n" << std::endl;
+    std::cout << "  =========================== \n" << std::endl;
 
-    double seq_result = 0.0;
-    double start_time = omp_get_wtime();
+    double execution_time = 0.0;
+    vector_dot_product_seq(a, b, execution_time);
 
-    for (long i = 0; i < N; i++) {
-        seq_result += a[i] * b[i];
-    }
+    double execution_time_omp = 0.0;
+    vector_dot_par(num_of_threads, a, b, execution_time_omp);
 
-    double end_time = omp_get_wtime();
-    double seq_duration = end_time - start_time;
-
-    std::cout << "1. Ket qua Tuan tu (Sequential): " << std::fixed << std::setprecision(2) << seq_result << std::endl;
-    std::cout << "   Thoi gian chay: " << std::setprecision(5) << seq_duration << " giay" << std::endl;
-
-
-
-    double par_result = 0.0;
-    start_time = omp_get_wtime();
-
-
-
-
-#pragma omp parallel for reduction(+:par_result)
-    for (long i = 0; i < N; i++) {
-        par_result += a[i] * b[i];
-    }
-
-    end_time = omp_get_wtime();
-    double par_duration = end_time - start_time;
-
-    std::cout << "\n2. Ket qua Song song (OpenMP):   " << std::fixed << std::setprecision(2) << par_result << std::endl;
-    std::cout << "   Thoi gian chay: " << std::setprecision(5) << par_duration << " giay" << std::endl;
-
-
-    std::cout << "\n---------------------------------" << std::endl;
-    if (par_duration < seq_duration) {
-        std::cout << "OpenMP nhanh hon gap: " << seq_duration / par_duration << " lan" << std::endl;
-    } else {
-        std::cout << "OpenMP cham hon hoac tuong duong (do overhead hoac du lieu qua it)." << std::endl;
-    }
-
-
-    int num_threads = 1;
-#pragma omp parallel
-    {
-#pragma omp single
-        num_threads = omp_get_num_threads();
-    }
-    std::cout << "So luong threads da su dung: " << num_threads << std::endl;
-
+    double execution_time_omp_SIMD_Cache = 0.0;
+    vector_dot_par_simdncache(num_of_threads, a, b, execution_time_omp_SIMD_Cache);
     return 0;
 }

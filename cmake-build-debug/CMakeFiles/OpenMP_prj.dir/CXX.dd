@@ -1,3 +1,9 @@
 ninja_dyndep_version = 1.0
 build CMakeFiles/OpenMP_prj.dir/main.cpp.obj: dyndep
 
+build CMakeFiles/OpenMP_prj.dir/Vector_dot_seq.cpp.obj: dyndep
+
+build CMakeFiles/OpenMP_prj.dir/Vector_dot_par.cpp.obj: dyndep
+
+build CMakeFiles/OpenMP_prj.dir/Vector_dot_par_SIMD.cpp.obj: dyndep
+

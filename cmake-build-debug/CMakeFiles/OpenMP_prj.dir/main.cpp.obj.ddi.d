@@ -163,4 +163,7 @@ CMakeFiles\OpenMP_prj.dir\main.cpp.obj.ddi: \
  C:/msys64/ucrt64/include/c++/15.2.0/bits/locale_conv.h \
  C:/msys64/ucrt64/include/c++/15.2.0/bits/quoted_string.h \
  C:/msys64/ucrt64/include/c++/15.2.0/sstream \
- C:/msys64/ucrt64/include/c++/15.2.0/bits/sstream.tcc
+ C:/msys64/ucrt64/include/c++/15.2.0/bits/sstream.tcc \
+ C:/Users/dinhd/OneDrive/Desktop/OpenMP_prj/Vector_dot_seq.h \
+ C:/Users/dinhd/OneDrive/Desktop/OpenMP_prj/Vector_dot_par.h \
+ C:/Users/dinhd/OneDrive/Desktop/OpenMP_prj/Vector_dot_par_SIMD.h

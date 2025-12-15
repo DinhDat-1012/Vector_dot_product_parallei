@@ -4,80 +4,43 @@
 #include <cstdlib>
 #include <ctime>
 #include <iomanip>
+#include "Vector_dot_seq.h"
+#include "Vector_dot_par.h"
+#include "Vector_dot_par_SIMD.h"
 
 int main() {
     omp_set_num_threads(16);
-    // 1. Cấu hình kích thước vector (N nên lớn để thấy sự khác biệt về tốc độ)
-    const long N = 1539607511; // 50 triệu phần tử
 
-    std::cout << "Dang khoi tao du lieu cho " << N << " phan tu..." << std::endl;
+    int num_of_threads = 16;
+    const long N_size_of_data = 1000;
 
     // Cấp phát bộ nhớ
-    std::vector<double> a(N);
-    std::vector<double> b(N);
+    std::vector<double> a(N_size_of_data);
+    std::vector<double> b(N_size_of_data);
 
     // Khởi tạo vector ngẫu nhiên
     // (Lưu ý: Đoạn khởi tạo này cũng có thể song song hóa, nhưng ta tập trung vào phần tính tích)
     srand(time(NULL));
     #pragma omp parallel for
-    for (long i = 0; i < N; i++) {
+    for (long i = 0; i < N_size_of_data; i++) {
         a[i] = (double)(rand()) / RAND_MAX;
         b[i] = (double)(rand()) / RAND_MAX;
     }
     #pragma omp barrier
-
+    //Hoàn thành khởi tạo hệ số của hai vector!
     std::cout << std::endl;
-    std::cout << "Khoi tao xong. Bat dau tinh toan...\n" << std::endl;
 
-    // --- TÍNH TUẦN TỰ (SEQUENTIAL) ---
-    double seq_result = 0.0;
-    double start_time = omp_get_wtime(); // Lấy thời gian bắt đầu
+    std::cout << "Vector size is:" << N_size_of_data <<"\n" << std::endl;
+    std::cout << "Initial done! Start computing...\n" << std::endl;
+    std::cout << "  =========================== \n" << std::endl;
 
-    for (long i = 0; i < N; i++) {
-        seq_result += a[i] * b[i];
-    }
+    double execution_time = 0.0;
+    vector_dot_product_seq(a, b, execution_time);
 
-    double end_time = omp_get_wtime(); // Lấy thời gian kết thúc
-    double seq_duration = end_time - start_time;
+    double execution_time_omp = 0.0;
+    vector_dot_par(num_of_threads, a, b, execution_time_omp);
 
-    std::cout << "1. Ket qua Tuan tu (Sequential): " << std::fixed << std::setprecision(2) << seq_result << std::endl;
-    std::cout << "   Thoi gian chay: " << std::setprecision(5) << seq_duration << " giay" << std::endl;
-
-
-    // --- TÍNH SONG SONG (OPENMP PARALLEL) ---
-    double par_result = 0.0;
-    start_time = omp_get_wtime();
-
-    // Chỉ thị OpenMP:
-    // parallel for: Chia vòng lặp cho các luồng (threads)
-    // reduction(+:par_result): Mỗi luồng tính tổng riêng, sau đó cộng gộp vào par_result
-    #pragma omp parallel for reduction(+:par_result)
-    for (long i = 0; i < N; i++) {
-        par_result += a[i] * b[i];
-    }
-
-    end_time = omp_get_wtime();
-    double par_duration = end_time - start_time;
-
-    std::cout << "\n2. Ket qua Song song (OpenMP):   " << std::fixed << std::setprecision(2) << par_result << std::endl;
-    std::cout << "   Thoi gian chay: " << std::setprecision(5) << par_duration << " giay" << std::endl;
-
-    // --- SO SÁNH ---
-    std::cout << "\n---------------------------------" << std::endl;
-    if (par_duration < seq_duration) {
-        std::cout << "OpenMP nhanh hon gap: " << seq_duration / par_duration << " lan" << std::endl;
-    } else {
-        std::cout << "OpenMP cham hon hoac tuong duong (do overhead hoac du lieu qua it)." << std::endl;
-    }
-
-    // In số lượng threads đã dùng
-    int num_threads = 1;
-    #pragma omp parallel
-    {
-        #pragma omp single
-        num_threads = omp_get_num_threads();
-    }
-    std::cout << "So luong threads da su dung: " << num_threads << std::endl;
-
+    double execution_time_omp_SIMD_Cache = 0.0;
+    vector_dot_par_simdncache(num_of_threads, a, b, execution_time_omp_SIMD_Cache);
     return 0;
 }
